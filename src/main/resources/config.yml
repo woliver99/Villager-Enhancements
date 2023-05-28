@@ -1,0 +1,18 @@
+#Villager Enchantments Config
+
+# The item used to reroll the villager's trades.
+item-used-to-reroll: STICK
+
+# Allows the player to reroll the villager's trades.
+allow-reroll: true
+
+# Allows the player to lock a specific enchantment on the villager, so they don't reroll past it.
+allow-lock: true
+
+
+# Allow the player to pick up the villager.
+allow-villager-pickup: true
+
+
+# Forces the maximum enchantment level on enchantment books from villagers.
+force-max-enchant: true

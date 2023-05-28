@@ -1,6 +1,9 @@
-name: Villager_Enchantments
+name: VillagerEnchantments
 version: '${project.version}'
-main: me.maplenetwork.villager_enchantments.Villager_Enchantments
+main: me.maplenetwork.villager_enchantments.VillagerEnchantments
 api-version: 1.17
 author:
     - woliver99
+commands:
+    VillagerEnchantments:
+        description: Shows VillagerEnchantments Commands.

@@ -1,2 +1,2 @@
-# Villager_Enchantments
+# Villager Enchantments
 A plugin to make villagers less annoying
