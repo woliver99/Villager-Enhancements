@@ -10,6 +10,7 @@ import org.bukkit.inventory.MerchantRecipe;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -40,16 +41,23 @@ public class MaxEnchantListener implements Listener {
 
                 for (Map.Entry<Enchantment, Integer> entry : maxEnchants.entrySet()) {
                     newMeta.addStoredEnchant(entry.getKey(), entry.getValue(), true);
-                    // calculate cost based on max enchantment level
-                    int costInEmeralds = calculateCost(entry.getKey(), entry.getValue());
-                    ItemStack cost = new ItemStack(Material.EMERALD, costInEmeralds);
                     newResult.setItemMeta(newMeta);
-
-                    MerchantRecipe newRecipe = new MerchantRecipe(newResult, recipe.getUses(), recipe.getMaxUses(), recipe.hasExperienceReward(), recipe.getVillagerExperience(), recipe.getPriceMultiplier());
-                    newRecipe.addIngredient(cost);
-
-                    event.setRecipe(newRecipe);
                 }
+
+                MerchantRecipe newRecipe = new MerchantRecipe(newResult, recipe.getUses(), recipe.getMaxUses(), recipe.hasExperienceReward(), recipe.getVillagerExperience(), recipe.getPriceMultiplier());
+
+                List<ItemStack> ingredients = recipe.getIngredients();
+                for (ItemStack ingredient : ingredients) {
+                    if (ingredient.getType() == Material.EMERALD) {
+                        int costInEmeralds = calculateCost(maxEnchants.keySet().iterator().next(), maxEnchants.values().iterator().next());
+                        ItemStack cost = new ItemStack(Material.EMERALD, costInEmeralds);
+                        newRecipe.addIngredient(cost);
+                    } else {
+                        newRecipe.addIngredient(ingredient);
+                    }
+                }
+
+                event.setRecipe(newRecipe);
             }
         }
     }
