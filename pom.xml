@@ -6,7 +6,7 @@
 
     <groupId>me.maplenetwork</groupId>
     <artifactId>VillagerEnchantments</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <packaging>jar</packaging>
 
     <name>VillagerEnchantments</name>
@@ -69,11 +69,6 @@
             <artifactId>spigot</artifactId>
             <version>1.19.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>in.yajnesh.util</groupId>
-            <artifactId>java-util</artifactId>
-            <version>1.0.0</version>
         </dependency>
     </dependencies>
 </project>

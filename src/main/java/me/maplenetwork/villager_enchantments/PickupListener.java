@@ -31,8 +31,15 @@ public class PickupListener implements Listener {
             Player player = event.getPlayer();
             if (player.isSneaking() && player.getInventory().getItemInMainHand().getType() == Material.AIR) {
                 Villager villager = (Villager) event.getRightClicked();
-                carryVillager(player, villager);
-                event.setCancelled(true);
+                if (isVillagerBeingCarried(villager)) {
+                    if (isVillagerBeingCarriedByPlayer(villager, player)){
+                        dropVillager(villager);
+                        event.setCancelled(true);
+                    }
+                } else {
+                    carryVillager(player, villager);
+                    event.setCancelled(true);
+                }
             }
         }
     }
@@ -63,7 +70,7 @@ public class PickupListener implements Listener {
                     AreaEffectCloud areaEffectCloud = (AreaEffectCloud) player.getPassengers().get(0);
                     Villager villager = (Villager) areaEffectCloud.getPassengers().get(0);
 
-                    areaEffectCloud.remove();
+                    dropVillager(villager);
                     villager.teleport(airBlockLocation);
 
                     if (VillagerEnchantments.minecraftVersionNumber == 19) {
@@ -128,6 +135,18 @@ public class PickupListener implements Listener {
         return areaEffectCloud.getMetadata(CarryTag) != null;
     }
 
+    private boolean isVillagerBeingCarriedByPlayer(Villager villager, Player player) {
+        Entity vehicle = villager.getVehicle();
+        if (vehicle instanceof AreaEffectCloud && vehicle.getMetadata(CarryTag) != null) {
+            AreaEffectCloud areaEffectCloud = (AreaEffectCloud) vehicle;
+            if (areaEffectCloud.getVehicle().equals(player)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     private boolean isPlayerCarryingVillager(Player player) {
         for (Entity passenger : player.getPassengers()) {
             if (passenger instanceof AreaEffectCloud && passenger.getMetadata(CarryTag) != null) {
@@ -160,6 +179,13 @@ public class PickupListener implements Listener {
                 player.addPassenger(areaEffectCloud);
                 areaEffectCloud.addPassenger(villager);
             });
+        }
+    }
+
+    private void dropVillager(Villager villager) {
+        AreaEffectCloud areaEffectCloud = (AreaEffectCloud) villager.getVehicle();
+        if (areaEffectCloud != null && areaEffectCloud.getMetadata(CarryTag) != null) {
+            areaEffectCloud.remove();
         }
     }
 }
